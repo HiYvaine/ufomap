@@ -75,17 +75,17 @@ void UFOMapDisplay::onInitialize()
 	    SLOT(updateQueueSize()));
 	queue_size_property_->setMin(1);
 
-	info_property_ = new rviz::Property("Information", QVariant(), "", this);
-	resolution_property_ = new rviz::StringProperty(
-	    "Resolution", "", "Resolution of the occupancy map", info_property_, nullptr, this);
-	num_leaf_nodes_property_ =
-	    new rviz::StringProperty("# Leaf Nodes", "", "Number of leaf nodes in the octree",
-	                             info_property_, nullptr, this);
-	num_inner_nodes_property_ =
-	    new rviz::StringProperty("# Inner Nodes", "", "Number of inner nodes in the octree",
-	                             info_property_, nullptr, this);
-	size_property_ = new rviz::StringProperty("Size", "", "Size of the octree",
-	                                          info_property_, nullptr, this);
+	// info_property_ = new rviz::Property("Information", QVariant(), "", this);
+	// resolution_property_ = new rviz::StringProperty(
+	//     "Resolution", "", "Resolution of the occupancy map", info_property_, nullptr, this);
+	// num_leaf_nodes_property_ =
+	//     new rviz::StringProperty("# Leaf Nodes", "", "Number of leaf nodes in the octree",
+	//                              info_property_, nullptr, this);
+	// num_inner_nodes_property_ =
+	//     new rviz::StringProperty("# Inner Nodes", "", "Number of inner nodes in the octree",
+	//                              info_property_, nullptr, this);
+	// size_property_ = new rviz::StringProperty("Size", "", "Size of the octree",
+	//                                           info_property_, nullptr, this);
 
 	render_category_property_ = new rviz::Property("Voxel Rendering", QVariant(), "", this);
 	for (VoxelType const& type : {OCCUPIED, FREE, UNKNOWN}) {
@@ -577,13 +577,13 @@ void UFOMapDisplay::updateInfo(double res, size_t num_leaf_nodes, size_t num_inn
 		res_str.setNum(res, 'g', 3);
 		res_str += " m";
 	}
-	resolution_property_->setString(res_str);
+	// resolution_property_->setString(res_str);
 
-	num_leaf_nodes_property_->setString(QString("%L1").arg(num_leaf_nodes));
-	num_inner_nodes_property_->setString(QString("%L1").arg(num_inner_nodes));
+	// num_leaf_nodes_property_->setString(QString("%L1").arg(num_leaf_nodes));
+	// num_inner_nodes_property_->setString(QString("%L1").arg(num_inner_nodes));
 
-	QLocale locale;
-	size_property_->setString(locale.formattedDataSize(size));
+	// QLocale locale;
+	// size_property_->setString(locale.formattedDataSize(size));
 }
 
 void UFOMapDisplay::colorPoint(rviz::PointCloud::Point& point,
