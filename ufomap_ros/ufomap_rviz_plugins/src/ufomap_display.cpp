@@ -75,17 +75,17 @@ void UFOMapDisplay::onInitialize()
 	    SLOT(updateQueueSize()));
 	queue_size_property_->setMin(1);
 
-	// info_property_ = new rviz::Property("Information", QVariant(), "", this);
-	// resolution_property_ = new rviz::StringProperty(
-	//     "Resolution", "", "Resolution of the occupancy map", info_property_, nullptr, this);
-	// num_leaf_nodes_property_ =
-	//     new rviz::StringProperty("# Leaf Nodes", "", "Number of leaf nodes in the octree",
-	//                              info_property_, nullptr, this);
-	// num_inner_nodes_property_ =
-	//     new rviz::StringProperty("# Inner Nodes", "", "Number of inner nodes in the octree",
-	//                              info_property_, nullptr, this);
-	// size_property_ = new rviz::StringProperty("Size", "", "Size of the octree",
-	//                                           info_property_, nullptr, this);
+	info_property_ = new rviz::Property("Information", QVariant(), "", this);
+	resolution_property_ = new rviz::StringProperty(
+	    "Resolution", "", "Resolution of the occupancy map", info_property_, [](){}, this);
+	num_leaf_nodes_property_ =
+	    new rviz::StringProperty("# Leaf Nodes", "", "Number of leaf nodes in the octree",
+	                             info_property_, [](){}, this);
+	num_inner_nodes_property_ =
+	    new rviz::StringProperty("# Inner Nodes", "", "Number of inner nodes in the octree",
+	                             info_property_, [](){}, this);
+	size_property_ = new rviz::StringProperty("Size", "", "Size of the octree",
+	                                          info_property_, [](){}, this);
 
 	render_category_property_ = new rviz::Property("Voxel Rendering", QVariant(), "", this);
 	for (VoxelType const& type : {OCCUPIED, FREE, UNKNOWN}) {
@@ -547,20 +547,20 @@ void UFOMapDisplay::addPoint(
 	// }
 
 	// // Recurse down
-	// ufo::geometry::AABB child_aabb;
-	// child_aabb.half_size = aabb.half_size / 2.0;
-	// for (size_t i = 0; i < 8; ++i) {
-	// 	child_aabb.center[0] +=
-	// 	    ((i & 1) ? child_aabb.half_size[0] : -child_aabb.half_size[0]);
-	// 	child_aabb.center[1] +=
-	// 	    ((i & 2) ? child_aabb.half_size[1] : -child_aabb.half_size[1]);
-	// 	child_aabb.center[2] +=
-	// 	    ((i & 4) ? child_aabb.half_size[2] : -child_aabb.half_size[2]);
-	// 	if (ufo::geometry::intersects(bbx, child_aabb)) {
-	// 		addPoint(points, probabilities, bbx, type, min_depth, point, occupancy, depth - 1,
-	// 		         child_aabb);
-	// 	}
-	// }
+	ufo::geometry::AABB child_aabb;
+	child_aabb.half_size = aabb.half_size / 2.0;
+	for (size_t i = 0; i < 8; ++i) {
+		child_aabb.center[0] +=
+		    ((i & 1) ? child_aabb.half_size[0] : -child_aabb.half_size[0]);
+		child_aabb.center[1] +=
+		    ((i & 2) ? child_aabb.half_size[1] : -child_aabb.half_size[1]);
+		child_aabb.center[2] +=
+		    ((i & 4) ? child_aabb.half_size[2] : -child_aabb.half_size[2]);
+		if (ufo::geometry::intersects(bbx, child_aabb)) {
+			addPoint(points, probabilities, bbx, type, min_depth, point, occupancy, depth - 1,
+			         child_aabb);
+		}
+	}
 }
 
 void UFOMapDisplay::updateInfo(double res, size_t num_leaf_nodes, size_t num_inner_nodes,
